@@ -59,10 +59,9 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.18.1.0/24  # Nova sub-rede para 'servidores'
+        - subnet: 172.18.1.0/24 
   clientes:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.18.2.0/24  # Nova sub-rede para 'clientes'
-
+        - subnet: 172.18.2.0/24 
