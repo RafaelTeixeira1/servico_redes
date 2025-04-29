@@ -48,6 +48,12 @@ services:
       servidores:
         ipv4_address: 192.168.1.7
     depends_on: [router]
+  cliente:
+    build: ./cliente
+    networks:
+      clientes:
+        ipv4_address: 192.168.2.10
+    depends_on: [router]
 
 networks:
   servidores:
@@ -55,9 +61,5 @@ networks:
     ipam:
       config:
         - subnet: 192.168.1.0/24
-  clientes:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.2.0/24
+
 
