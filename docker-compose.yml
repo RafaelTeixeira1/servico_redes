@@ -1,0 +1,69 @@
+version: "3.8"
+services:
+  router:
+    build: ./router
+    networks:
+      servidores:
+        ipv4_address: 192.168.1.1
+      clientes:
+        ipv4_address: 192.168.2.1
+    privileged: true
+    volumes:
+      - ./router/iptables.rules:/etc/iptables.rules
+  dns:
+    build: ./dns
+    networks:
+      servidores:
+        ipv4_address: 192.168.1.2
+    depends_on: [router]
+  dhcp:
+    build: ./dhcp
+    networks:
+      servidores:
+        ipv4_address: 192.168.1.3
+      clientes:
+        ipv4_address: 192.168.2.3
+    depends_on: [router]
+  ldap:
+    build: ./ldap
+    networks:
+      servidores:
+        ipv4_address: 192.168.1.4
+    depends_on: [router]
+  samba:
+    build: ./samba
+    networks:
+      servidores:
+        ipv4_address: 192.168.1.5
+    depends_on: [ldap, router]
+  ftp:
+    build: ./ftp
+    networks:
+      servidores:
+        ipv4_address: 192.168.1.6
+    depends_on: [router]
+  nginx:
+    build: ./nginx
+    networks:
+      servidores:
+        ipv4_address: 192.168.1.7
+    depends_on: [router]
+  cliente:
+    build: ./cliente
+    networks:
+      clientes:
+        ipv4_address: 192.168.2.10
+    depends_on: [router]
+
+networks:
+  servidores:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+  clientes:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24
+

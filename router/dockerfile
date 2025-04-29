@@ -1,0 +1,7 @@
+FROM ubuntu:20.04
+RUN apt-get update && apt-get install -y iproute2 iptables
+COPY entrypoint.sh /usr/local/bin/
+COPY iptables.rules /etc/iptables.rules
+RUN chmod +x /usr/local/bin/entrypoint.sh
+CMD ["/usr/local/bin/entrypoint.sh"]
+

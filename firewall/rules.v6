@@ -1,0 +1,3 @@
+*filter
+-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+COMMIT
