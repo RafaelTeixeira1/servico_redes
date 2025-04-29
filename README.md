@@ -38,8 +38,7 @@ infra-rede-docker/
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/seu-usuario/infra-rede-docker.git
-   cd infra-rede-docker
+   git clone https://github.com/RafaelTeixeira1/servico_redes.git
    ```
 
 2. **Suba os containers com Docker Compose:**
