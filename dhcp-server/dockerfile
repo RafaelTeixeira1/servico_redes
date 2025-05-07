@@ -1,0 +1,25 @@
+FROM ubuntu:20.04
+
+# Instala o isc-dhcp-server
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y isc-dhcp-server && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copia o arquivo de configuração
+COPY dhcpd.conf /etc/dhcp/dhcpd.conf
+
+# Prepara o diretório e o arquivo de leases
+RUN mkdir -p /var/lib/dhcp && \
+    touch /var/lib/dhcp/dhcpd.leases
+
+# Permissões para o arquivo de leases
+RUN chmod 666 /var/lib/dhcp/dhcpd.leases
+
+# Força o DHCP a escutar na eth0
+RUN sed -i 's/INTERFACESv4=""/INTERFACESv4="eth0"/' /etc/default/isc-dhcp-server
+
+EXPOSE 67/udp
+
+# Executa o comando de inicialização
+CMD ["sh", "-c", "touch /var/lib/dhcp/dhcpd.leases && chmod 666 /var/lib/dhcp/dhcpd.leases && dhcpd -4 -f -d"]
+
