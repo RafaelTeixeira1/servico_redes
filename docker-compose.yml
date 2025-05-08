@@ -5,6 +5,7 @@ services:
     container_name: router
     cap_add:
       - NET_ADMIN
+    privileged: true
     networks:
       servers:
         ipv4_address: 192.168.10.254  
