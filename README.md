@@ -3,6 +3,10 @@
 
 Este projeto implementa uma infraestrutura de rede corporativa básica utilizando Docker. A estrutura inclui serviços essenciais como DNS, DHCP, Firewall, LDAP, SAMBA, FTP e NGINX. O objetivo é simular um ambiente corporativo com autenticação centralizada, compartilhamento de arquivos, serviços de rede e servidor web.
 
+## 🛠️ Objetivos
+
+Implementar uma infraestrutura de rede corporativa básica, integrando serviços essenciais para gestão e segurança de redes utilizando containers Docker.
+
 ## 📦 Serviços Implementados
 
 - **DNS-** (Bind9): resolução de nomes internos e encaminhamento externo.
@@ -13,20 +17,11 @@ Este projeto implementa uma infraestrutura de rede corporativa básica utilizand
 - **FTP** (vsftpd): transferência de arquivos segura.
 - **NGINX**: servidor web com página de boas-vindas e Virtual Hosts.
 
-## 🛠️ Objetivos
-
-Implementar uma infraestrutura de rede corporativa básica, integrando serviços essenciais para gestão e segurança de redes utilizando containers Docker.
 
 ## 🚀 Requisitos
 
 - Docker
 - Docker Compose
-
-## 🌐 Topologia de Rede
-
-- Sub-rede 1: `192.168.1.0/24` – Servidores
-- Sub-rede 2: `192.168.2.0/24` – Clientes
-- Container `router`: responsável pelo roteamento e firewall entre as sub-redes.
 
 ## 📁 Estrutura de Diretórios
 
@@ -60,7 +55,7 @@ Implementar uma infraestrutura de rede corporativa básica, integrando serviços
     └── start.sh
 ```
 
-## 🚀 Execução
+## 🚀 Como Executaro Projeto
 
 1. **Clone o repositório:**
 
@@ -105,22 +100,26 @@ Implementar uma infraestrutura de rede corporativa básica, integrando serviços
 
 ## 🛠️ Observações Técnicas
 
-FTP Server: Configurado em ftp-server/vsftpd.conf
-
-DHCP Server: Configurado em dhcp-server/dhcpd.conf
-
-DNS Server: Configurado em dns-server/setup-bind.sh
-
-Firewall: Regras configuradas em firewall/firewall.sh
+- **FTP Server-**: Configurado em ftp-server/vsftpd.conf
+- **DHCP Server-**: Configurado em dhcp-server/dhcpd.conf
+- **DNS Server-**: Configurado em dns-server/setup-bind.sh
+- **Firewall-**: Regras configuradas em firewall/firewall.sh
 
 ## 📦 Comandos Úteis
 
-- Arquivos de configuração estão organizados por pasta para cada serviço.
-- Regras do firewall estão em `firewall/regras.sh` ou `router/firewall_rules.sh`.
-- Exemplo de usuários e domínios em `ldap/base.ldif`.
-- Os arquivos da web estão em `nginx/index.html` e `nginx/default.conf`.
-- Zonas DNS estão em `dns/db.zona` e `dns/named.conf`.
+- Recompilar as imagens sem cache
+   ```bash
+   docker-compose build --no-cache
+   ```
+- Ver logs em tempo real
+   ```bash
+   docker-compose logs -f
+   ```
+- Restartar um container específico:
+   ```bash
+   docker-compose restart <container_name>
+   ```
 
 ## 📬 Contato
 
-Para dúvidas ou sugestões, entre em contato com [rrafael_st@hotmail.com].
+Para dúvidas ou sugestões, entre em contato com [rrafael_st@hotmail.com ou jhannyferbiangulo@gmail.com].
