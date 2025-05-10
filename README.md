@@ -1,17 +1,26 @@
 
 # 🏢 Infraestrutura de Rede Corporativa com Docker
 
-Este projeto implementa uma infraestrutura de rede corporativa básica utilizando Docker, com serviços essenciais como DNS, DHCP, Firewall, LDAP, SAMBA, FTP e NGINX.
+Este projeto implementa uma infraestrutura de rede corporativa básica utilizando Docker. A estrutura inclui serviços essenciais como DNS, DHCP, Firewall, LDAP, SAMBA, FTP e NGINX. O objetivo é simular um ambiente corporativo com autenticação centralizada, compartilhamento de arquivos, serviços de rede e servidor web.
 
 ## 📦 Serviços Implementados
 
-- **DNS** (Bind9): resolução de nomes internos e encaminhamento externo.
-- **DHCP** (ISC DHCP): atribuição dinâmica de IPs com reservas.
+- **DNS-** (Bind9): resolução de nomes internos e encaminhamento externo.
+- **DHCP-** (ISC DHCP): atribuição dinâmica de IPs com reservas.
 - **Firewall** (iptables via container roteador): regras de segurança e roteamento entre sub-redes.
 - **LDAP** (OpenLDAP): autenticação centralizada de usuários e grupos.
 - **SAMBA**: compartilhamento de arquivos com autenticação via LDAP.
 - **FTP** (vsftpd): transferência de arquivos segura.
 - **NGINX**: servidor web com página de boas-vindas e Virtual Hosts.
+
+## 🛠️ Objetivos
+
+Implementar uma infraestrutura de rede corporativa básica, integrando serviços essenciais para gestão e segurança de redes utilizando containers Docker.
+
+## 🚀 Requisitos
+
+- Docker
+- Docker Compose
 
 ## 🌐 Topologia de Rede
 
@@ -22,15 +31,33 @@ Este projeto implementa uma infraestrutura de rede corporativa básica utilizand
 ## 📁 Estrutura de Diretórios
 
 ```
-infra-rede-docker/
-├── dns/
-├── dhcp/
+/
+├── docker-compose.yml
+├── dns-server/
+│   └── Dockerfile
+│   └── setup-bind.sh
+├── dhcp-server/
+│   └── Dockerfile
+│   └── dhcpd.conf
 ├── firewall/
-├── ldap/
-├── samba/
-├── ftp/
-├── nginx/
-└── docker-compose.yml
+│   └── Dockerfile
+│   └── firewall.sh
+├── ftp-server/
+│   └── Dockerfile
+│   └── vsftpd.conf
+├── ldap-server/
+│   └── Dockerfile
+│   └── bootstrap.ldif
+├── samba-server/
+│   └── Dockerfile
+│   └── smb.conf
+├── web-server/
+│   └── Dockerfile
+│   └── default.conf
+│   └── index.html
+└── router/
+    └── Dockerfile
+    └── start.sh
 ```
 
 ## 🚀 Execução
@@ -38,30 +65,34 @@ infra-rede-docker/
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/RafaelTeixeira1/servico_redes.git
+   git clone <URL_DO_REPOSITORIO>
+   cd <NOME_DO_REPOSITORIO>
    ```
 
-2. **Suba os containers com Docker Compose:**
+2. **Execute o comando para iniciar todos os containers::**
 
    ```bash
-   docker-compose up -d
+   docker-compose up --build -d
    ```
 
-3. **Verifique os logs de um serviço (exemplo: DNS):**
+3. **Verifique os containers em execução:**
 
    ```bash
-   docker logs dns
+   docker ps
    ```
 
-4. **Acesse os serviços:**
+4. **Para acessar um container específico:**
 
-   - NGINX (web): http://localhost:8080  
-   - FTP: via FileZilla, IP do container FTP, porta 21 (ou 20/990 se configurado FTPS)  
-   - SAMBA: `\\<ip-do-container-samba>\compartilhamento`  
-   - LDAP: via ferramenta como LDAP Admin ou `ldapsearch`  
-   - DNS: testar com `dig` ou `nslookup` apontando para o IP do container DNS  
-   - DHCP: testável em container cliente em outra sub-rede  
+   ```bash
+   docker exec -it <container_name> /bin/bash
+   ```
 
+5. **Para encerrar todos os containers:**
+
+   ```bash
+   docker-compose down
+   ```
+   
 ## 🧪 Testes Recomendados
 
 - ✅ Verificar se os clientes recebem IP automaticamente via DHCP.
@@ -74,11 +105,15 @@ infra-rede-docker/
 
 ## 🛠️ Observações Técnicas
 
-> O container `router` é responsável por rotear pacotes entre as duas sub-redes (clientes e servidores) e aplicar as regras de firewall via iptables.  
-> O serviço LDAP pode ser usado como backend de autenticação para o SAMBA e FTP.  
-> Todos os containers compartilham a mesma rede Docker (bridge ou macvlan, conforme sua configuração), mas estão isolados em sub-redes distintas, conforme especificado no `docker-compose.yml`.
+FTP Server: Configurado em ftp-server/vsftpd.conf
 
-## 📑 Documentação Extra
+DHCP Server: Configurado em dhcp-server/dhcpd.conf
+
+DNS Server: Configurado em dns-server/setup-bind.sh
+
+Firewall: Regras configuradas em firewall/firewall.sh
+
+## 📦 Comandos Úteis
 
 - Arquivos de configuração estão organizados por pasta para cada serviço.
 - Regras do firewall estão em `firewall/regras.sh` ou `router/firewall_rules.sh`.
